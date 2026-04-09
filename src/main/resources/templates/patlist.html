@@ -10,21 +10,37 @@
     <table class="table">
         <thead>
             <tr>
-                <th>name</th>
+                <th>id</th>
+                <th>svnr</th>
+                <th>vorname</th>
+                <th>nachname</th>
+                <th>gender</th>
                 <th>birth</th>
+                <th>Aktion</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="p : ${patients}">
-                <td th:text="${p.name}"></td>
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.svnr}"></td>
+                <td th:text="${p.vorname}"></td>
+                <td th:text="${p.nachname}"></td>
+                <td th:text="${p.gender}"></td>
                 <td th:text="${p.birth}"></td>
+                <td>
+                    <a th:href="@{/reservation/add(patientId=${p.id})}">Reservieren</a>
+                </td>
+
             </tr>
         </tbody>
 
     </table>
 
     <p>
-        <a href="/patient/add">new patient</a>
+        <a href="/patient/add">Neuer Patient</a>
+    </p>
+    <p>
+        <a href="/reservation/list">Reservierungs-Liste</a>
     </p>
 </div>
 </body>

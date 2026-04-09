@@ -6,12 +6,33 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <form th:action="@{/patient/add}" th:object="${patient}" method="post">
-            <input type="text" th:field="*{name}" class="form-control" placeholder="patient name">
-            birth date <input type="date" th:field="*{birth}" class="form-control">
-            <input type="submit" class="form-control" value="Save">
-        </form>
-    </div>
+<div class="container">
+    <h3>Add a Patient</h3>
+
+    <form th:action="@{/patient/add}" th:object="${patient}" method="post">
+
+        <input type="number" th:field="*{svnr}" class="form-control" placeholder="SVNR" style="margin-bottom: 15px;" min="0">
+
+        <input type="text" th:field="*{vorname}" class="form-control" placeholder="Vorname" style="margin-bottom: 15px;">
+
+        <input type="text" th:field="*{nachname}" class="form-control" placeholder="Nachname" style="margin-bottom: 15px;">
+
+        <select th:field="*{gender}" class="form-control" style="margin-bottom: 15px;">
+            <option value="" >Geschlecht wählen</option>
+            <option value="m">Männlich</option>
+            <option value="w">Weiblich</option>
+            <option value="d">Divers</option>
+        </select>
+
+        <input type="date" th:field="*{birth}" class="form-control" style="margin-bottom: 15px;">
+
+        <input type="submit" class="form-control btn btn-primary" value="Save">
+
+        <p style="margin-top:10px;"><a th:href="@{/patient/list}">zurück zur Patientenliste</a></p>
+
+
+    </form>
+</div>
+
 </body>
 </html>

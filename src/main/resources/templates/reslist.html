@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservierungen</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h3>Reservierungen pro Gerät</h3>
+
+    <form th:action="@{/reservation/list}" method="get" class="form-inline" style="margin-bottom:15px;">
+        <div class="form-group">
+            <label for="deviceSelect">Gerät</label>
+            <select id="deviceSelect" name="deviceId" class="form-control" style="margin-left:10px; margin-right:10px;">
+                <option value="">Gerät wählen</option>
+                <option th:each="d : ${devices}" th:value="${d.id}" th:text="${d.bezeichnung} + ' (' + ${d.geraetetyp} + ')'" th:selected="${d.id} == ${selectedDeviceId}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Anzeigen</button>
+        <a th:href="@{/reservation/add}" class="btn btn-default" style="margin-left:10px;">Neue Reservierung</a>
+    </form>
+
+    <div th:if="${reservations}">
+        <!-- Tabelle: Design wie in patlist.html verwenden -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Start</th>
+                    <th>Ende</th>
+                    <th>Region</th>
+                    <th>Kommentar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${reservations}">
+                    <td th:text="${r.id}"></td>
+                    <td th:text="${r.patient != null ? r.patient.vorname + ' ' + r.patient.nachname : 'n/a'}"></td>
+                    <td th:text="${r.startTime != null ? #temporals.format(r.startTime,'yyyy-MM-dd HH:mm') : ''}"></td>
+                    <td th:text="${r.endTime != null ? #temporals.format(r.endTime,'yyyy-MM-dd HH:mm') : ''}"></td>
+                    <td th:text="${r.bodyRegion != null ? r.bodyRegion.description : ''}"></td>
+                    <td th:text="${r.comment != null ? r.comment : ''}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p><a th:href="@{/patient/list}">Zur Patientenliste</a></p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var btn = document.getElementById('toggleStack');
+        if (btn) {
+            btn.addEventListener('click', function(e){
+                e.preventDefault();
+                var stack = document.getElementById('stack');
+                if (stack.style.display === 'none') stack.style.display = 'block'; else stack.style.display = 'none';
+            });
+        }
+    });
+</script>
+</body>
+</html>
