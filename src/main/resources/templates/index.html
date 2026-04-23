@@ -1,17 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Greeting</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Radiologie</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
-<div class="container">
-    <h1>Hallo</h1>
-    Datum: <span th:text="${today}"></span>
-    <div>
-        <a href="/patient/list">patient list</a>
+<body class="container mt-5 text-center">
+    <h1 class="mb-5">Radiologie</h1>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Patienten</h5>
+                    <p class="card-text">Patientenliste anzeigen.</p>
+                    <a th:href="@{/patients/list}" class="btn btn-primary w-100">Patientenliste</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Listen</h5>
+                    <p class="card-text">Reservierungsliste pro Gerät.</p>
+                    <a th:href="@{/reservations/list}" class="btn btn-primary w-100">Reservierungsliste</a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 </body>
 </html>

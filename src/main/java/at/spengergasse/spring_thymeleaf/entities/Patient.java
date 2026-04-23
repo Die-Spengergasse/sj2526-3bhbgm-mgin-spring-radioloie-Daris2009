@@ -1,26 +1,23 @@
 package at.spengergasse.spring_thymeleaf.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "patients")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // SVNR als numerischer Typ (Long) damit nur Zahlen akzeptiert werden
     private Long svnr;
     private String vorname;
     private String nachname;
     private String gender;
     private LocalDate birth;
 
-    // Getter & Setter
 
     public int getId() {
         return id;
