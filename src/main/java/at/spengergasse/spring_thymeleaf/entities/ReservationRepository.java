@@ -13,5 +13,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     List<Reservation> findByDeviceIdOrderByStartTimeAsc(int deviceId);
 
     @Query("select r from Reservation r where r.device.id = :deviceId and r.startTime < :end and r.endTime > :start")
-    List<Reservation> findOverlapping(@Param("deviceId") int deviceId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    List<Reservation> findOverlappingWithDevice(@Param("deviceId") int deviceId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query("select r from Reservation r where r.patient.id = :patientId and r.startTime < :end and r.endTime > :start")
+    List<Reservation> findOverlappingWithPatient(@Param("patientId") int patientId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

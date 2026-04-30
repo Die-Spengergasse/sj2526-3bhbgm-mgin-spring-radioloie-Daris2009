@@ -1,6 +1,7 @@
 package at.spengergasse.spring_thymeleaf.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,11 @@ public class Reservation {
     @JoinColumn(name = "body_region_id")
     private BodyRegion bodyRegion;
 
+    @NotNull(message = "Startzeit darf nicht leer sein")
+    @Future(message = "Der Termin muss in der Zukunft liegen")
     private LocalDateTime startTime;
+
+    @NotNull(message = "Endzeit darf nicht leer sein")
     private LocalDateTime endTime;
 
     @Column(columnDefinition = "TEXT")

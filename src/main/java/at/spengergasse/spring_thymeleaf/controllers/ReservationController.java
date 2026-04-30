@@ -1,9 +1,11 @@
 package at.spengergasse.spring_thymeleaf.controllers;
 
 import at.spengergasse.spring_thymeleaf.entities.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +40,35 @@ public class ReservationController {
     }
 
     @PostMapping("/new")
-    public String createReservation(@ModelAttribute Reservation reservation) {
+    public String createReservation(@Valid @ModelAttribute Reservation reservation, BindingResult bindingResult, Model model) {
+        if (reservation.getStartTime() != null && reservation.getEndTime() != null) {
+            if (reservation.getEndTime().isBefore(reservation.getStartTime())) {
+                bindingResult.rejectValue("endTime", "error.reservation", "Die Endzeit muss nach der Startzeit liegen");
+            }
+
+            if (reservation.getDevice() != null) {
+                List<Reservation> overlappingDevice = reservationRepository.findOverlappingWithDevice(
+                        reservation.getDevice().getId(), reservation.getStartTime(), reservation.getEndTime());
+                if (!overlappingDevice.isEmpty()) {
+                    bindingResult.rejectValue("device", "error.reservation", "Das Gerät ist zu dieser Zeit bereits belegt");
+                }
+            }
+
+            if (reservation.getPatient() != null) {
+                List<Reservation> overlappingPatient = reservationRepository.findOverlappingWithPatient(
+                        reservation.getPatient().getId(), reservation.getStartTime(), reservation.getEndTime());
+                if (!overlappingPatient.isEmpty()) {
+                    bindingResult.rejectValue("patient", "error.reservation", "Der Patient hat zu dieser Zeit bereits einen Termin");
+                }
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("patients", patientRepository.findAll());
+            model.addAttribute("devices", deviceRepository.findAll());
+            model.addAttribute("bodyRegions", bodyRegionRepository.findAll());
+            return "reservation-form";
+        }
         reservationRepository.save(reservation);
         return "redirect:/reservations/list?deviceId=" + reservation.getDevice().getId();
     }

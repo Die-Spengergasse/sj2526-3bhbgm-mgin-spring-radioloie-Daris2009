@@ -1,6 +1,7 @@
 package at.spengergasse.spring_thymeleaf.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -12,10 +13,22 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull(message = "SVNR darf nicht leer sein")
+    @Min(value = 1000000000L, message = "SVNR muss 10-stellig sein")
+    @Max(value = 9999999999L, message = "SVNR muss 10-stellig sein")
     private Long svnr;
+
+    @NotBlank(message = "Vorname darf nicht leer sein")
     private String vorname;
+
+    @NotBlank(message = "Nachname darf nicht leer sein")
     private String nachname;
+
+    @NotBlank(message = "Geschlecht darf nicht leer sein")
     private String gender;
+
+    @NotNull(message = "Geburtsdatum darf nicht leer sein")
+    @Past(message = "Geburtsdatum muss in der Vergangenheit liegen")
     private LocalDate birth;
 
 
